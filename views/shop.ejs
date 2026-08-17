@@ -49,7 +49,9 @@
                 <h1 class="page-title"><i class="ri-store-3-line"></i> Our Bag Collection</h1>
                 <p class="page-subtitle">Handcrafted bags for every occasion</p>
             </div>
-            <a href="/owners/admin" class="btn btn-outline"><i class="ri-add-line"></i> Add Product (Admin)</a>
+            <% if (isOwner) { %>
+                <a href="/owners/admin" class="btn btn-outline"><i class="ri-add-line"></i> Add Product (Admin)</a>
+            <% } %>
         </div>
 
         <% if (products.length === 0) { %>
@@ -57,7 +59,11 @@
                 <i class="ri-shopping-bag-3-line empty-icon"></i>
                 <h2>No Products Available</h2>
                 <p>There are currently no bags in the store. Admins can add new products via the dashboard.</p>
-                <a href="/owners/admin" class="btn btn-primary mt-4"><i class="ri-dashboard-line"></i> Go to Admin Dashboard</a>
+                <% if (isOwner) { %>
+                    <a href="/owners/admin" class="btn btn-primary mt-4">
+                        Admin Panel
+                    </a>
+                <% } %>
             </div>
         <% } else { %>
             <div class="products-grid">
@@ -67,7 +73,7 @@
                         style="background-color: <%= product.bgcolor %>; color: <%= product.textcolor %>;"
                     >
                         <div class="product-image-container" style="background-color: <%= product.panelcolor %>;">
-                            <% if (product.image) { %>
+                            <% if (product.image && product.image.length > 0) { %>
                                 <img 
                                     src="data:image/jpeg;base64,<%= product.image.toString('base64') %>" 
                                     alt="<%= product.name %>"

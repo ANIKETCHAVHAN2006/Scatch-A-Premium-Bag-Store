@@ -61,7 +61,7 @@
                             <div class="cart-item-card" style="background-color: <%= product.bgcolor %>; color: <%= product.textcolor %>;">
                                 
                                 <div class="cart-item-image" style="background-color: <%= product.panelcolor %>;">
-                                    <% if (product.image) { %>
+                                    <% if (product.image && product.image.length > 0) { %>
                                         <img src="data:image/jpeg;base64,<%= product.image.toString('base64') %>" alt="<%= product.name %>">
                                     <% } else { %>
                                         <div class="no-img"><i class="ri-image-line"></i></div>

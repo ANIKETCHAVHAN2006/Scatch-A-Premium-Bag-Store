@@ -108,7 +108,7 @@
                         <% products.forEach(function(product) { %>
                             <div class="admin-product-item" style="background-color: <%= product.bgcolor %>; color: <%= product.textcolor %>;">
                                 <div class="admin-product-thumb">
-                                    <% if (product.image) { %>
+                                    <% if (product.image && product.image.length > 0) { %>
                                         <img src="data:image/jpeg;base64,<%= product.image.toString('base64') %>" alt="<%= product.name %>">
                                     <% } else { %>
                                         <div class="no-img"><i class="ri-image-line"></i></div>

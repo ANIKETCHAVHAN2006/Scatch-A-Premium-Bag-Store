@@ -12,8 +12,11 @@ const getLoggedInUser = async (req) => {
     try {
         const token = req.cookies.token;
         if (!token) return null;
-        const decoded = jwt.verify(token, keys.jwtKey || process.env.JWT_KEY);
-        return await userModel.findOne({ email: decoded.email }).select("-password");
+        const jwtSecret = keys.jwtKey || process.env.JWT_KEY || "scatch_jwt_secret_key_2026";
+        const decoded = jwt.verify(token, jwtSecret);
+        const user = await userModel.findOne({ email: decoded.email }).select("-password");
+        if (user && !user.cart) user.cart = [];
+        return user;
     } catch {
         return null;
     }
@@ -44,14 +47,10 @@ router.get("/shop", async (req, res) => {
     try {
         const products = await productModel.find();
         const user = await getLoggedInUser(req);
-        const success = req.flash("success");
-        const error = req.flash("error");
 
         res.render("shop", {
             products,
-            user,
-            success,
-            error
+            user
         });
     } catch (error) {
         res.status(500).send(error.message);
@@ -68,6 +67,8 @@ router.get("/addtocart/:id", isLoggedIn, async (req, res) => {
         }
 
         const user = await userModel.findOne({ email: req.user.email });
+        if (!user.cart) user.cart = [];
+
         user.cart.push(req.params.id);
         await user.save();
 
@@ -83,9 +84,10 @@ router.get("/addtocart/:id", isLoggedIn, async (req, res) => {
 router.get("/removefromcart/:id", isLoggedIn, async (req, res) => {
     try {
         const user = await userModel.findOne({ email: req.user.email });
+        if (!user.cart) user.cart = [];
         
-        // Remove first occurrence of product ID from cart
-        const index = user.cart.indexOf(req.params.id);
+        // Remove first occurrence of product ID from cart comparing string IDs
+        const index = user.cart.findIndex(id => id.toString() === req.params.id);
         if (index > -1) {
             user.cart.splice(index, 1);
             await user.save();
@@ -107,6 +109,8 @@ router.get("/cart", isLoggedIn, async (req, res) => {
         const user = await userModel
             .findOne({ email: req.user.email })
             .populate("cart");
+
+        if (!user.cart) user.cart = [];
 
         // Filter out null values in case products were deleted
         user.cart = user.cart.filter(item => item !== null && item !== undefined);
@@ -132,14 +136,9 @@ router.get("/cart", isLoggedIn, async (req, res) => {
             finalAmount
         };
 
-        const success = req.flash("success");
-        const error = req.flash("error");
-
         res.render("cart", {
             user,
-            billDetails,
-            success,
-            error
+            billDetails
         });
     } catch (error) {
         res.status(500).send(error.message);

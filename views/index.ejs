@@ -18,7 +18,7 @@
             <a href="/" class="active"><i class="ri-home-4-line"></i> Home</a>
             <a href="/shop"><i class="ri-store-2-line"></i> Shop</a>
             <% if (user) { %>
-                <a href="/cart"><i class="ri-shopping-cart-2-line"></i> Cart (<%= user.cart.length %>)</a>
+                <a href="/cart"><i class="ri-shopping-cart-2-line"></i> Cart (<%= (user.cart && user.cart.length) ? user.cart.length : 0 %>)</a>
                 <a href="/users/logout" class="btn-sm btn-outline"><i class="ri-logout-box-r-line"></i> Logout</a>
             <% } else { %>
                 <a href="/login"><i class="ri-user-line"></i> Login</a>
@@ -26,6 +26,20 @@
             <% } %>
         </nav>
     </header>
+
+    <!-- Flash Alerts -->
+    <div class="alert-container">
+        <% if (success && success.length > 0) { %>
+            <div class="alert alert-success">
+                <i class="ri-checkbox-circle-fill"></i> <%= success %>
+            </div>
+        <% } %>
+        <% if (error && error.length > 0) { %>
+            <div class="alert alert-danger">
+                <i class="ri-error-warning-fill"></i> <%= error %>
+            </div>
+        <% } %>
+    </div>
 
     <!-- Hero Section -->
     <section class="hero-section">
@@ -37,7 +51,9 @@
             </p>
             <div class="hero-actions">
                 <a href="/shop" class="btn btn-primary btn-lg"><i class="ri-shopping-bag-line"></i> Explore Collection</a>
-                <a href="/owners/admin" class="btn btn-outline btn-lg"><i class="ri-admin-line"></i> Admin Dashboard</a>
+                <% if (isOwner) { %>
+                    <a href="/owners/admin" class="btn btn-outline btn-lg">Admin Panel</a>
+                <% } %>
             </div>
         </div>
         <div class="hero-visual">

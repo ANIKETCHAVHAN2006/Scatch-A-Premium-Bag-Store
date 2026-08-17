@@ -11,7 +11,7 @@ const isLoggedIn = async (req, res, next) => {
             return res.redirect("/login");
         }
 
-        const jwtSecret = keys.jwtKey || process.env.JWT_KEY;
+        const jwtSecret = keys.jwtKey || process.env.JWT_KEY || "scatch_jwt_secret_key_2026";
         const decoded = jwt.verify(token, jwtSecret);
 
         const user = await userModel.findOne({ email: decoded.email }).select("-password");
@@ -20,6 +20,10 @@ const isLoggedIn = async (req, res, next) => {
             res.clearCookie("token");
             req.flash("error", "User account not found. Please log in again.");
             return res.redirect("/login");
+        }
+
+        if (!user.cart) {
+            user.cart = [];
         }
 
         req.user = user;
