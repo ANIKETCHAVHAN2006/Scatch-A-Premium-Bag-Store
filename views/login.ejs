@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scatch - Login</title>
+    <link rel="stylesheet" href="/stylesheets/style.css">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet" />
+</head>
+<body class="bg-dark font-sans text-light">
+
+    <!-- Header Navigation -->
+    <header class="navbar">
+        <div class="logo">
+            <a href="/">SCATCH</a>
+        </div>
+        <nav class="nav-links">
+            <a href="/"><i class="ri-home-4-line"></i> Home</a>
+            <a href="/shop"><i class="ri-store-2-line"></i> Shop</a>
+            <a href="/login" class="active"><i class="ri-user-line"></i> Login</a>
+            <a href="/register" class="btn-sm btn-primary"><i class="ri-user-add-line"></i> Register</a>
+        </nav>
+    </header>
+
+    <!-- Flash Alerts -->
+    <div class="alert-container">
+        <% if (error && error.length > 0) { %>
+            <div class="alert alert-danger">
+                <i class="ri-error-warning-fill"></i> <%= error %>
+            </div>
+        <% } %>
+        <% if (success && success.length > 0) { %>
+            <div class="alert alert-success">
+                <i class="ri-checkbox-circle-fill"></i> <%= success %>
+            </div>
+        <% } %>
+    </div>
+
+    <!-- Auth Card Container -->
+    <main class="auth-wrapper">
+        <div class="card auth-card">
+            <div class="auth-header">
+                <i class="ri-lock-2-line auth-icon"></i>
+                <h2>Welcome Back</h2>
+                <p>Log in to access your Scatch bag collection and cart.</p>
+            </div>
+
+            <form action="/users/login" method="POST" class="auth-form">
+                <div class="form-group">
+                    <label for="email"><i class="ri-mail-line"></i> Email Address</label>
+                    <input 
+                        type="email" 
+                        id="email" 
+                        name="email" 
+                        placeholder="john@example.com" 
+                        class="form-input" 
+                        required
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="password"><i class="ri-key-2-line"></i> Password</label>
+                    <input 
+                        type="password" 
+                        id="password" 
+                        name="password" 
+                        placeholder="••••••••" 
+                        class="form-input" 
+                        required
+                    >
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-block btn-lg">
+                    <i class="ri-login-box-line"></i> Log In
+                </button>
+            </form>
+
+            <div class="auth-footer">
+                <p>Don't have an account? <a href="/register" class="auth-link">Create Account</a></p>
+            </div>
+        </div>
+    </main>
+
+</body>
+</html>

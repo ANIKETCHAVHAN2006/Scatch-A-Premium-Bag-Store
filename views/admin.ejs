@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scatch - Admin Dashboard</title>
+    <link rel="stylesheet" href="/stylesheets/style.css">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet" />
+</head>
+<body class="bg-dark font-sans text-light">
+
+    <!-- Header Navigation -->
+    <header class="navbar">
+        <div class="logo">
+            <a href="/">SCATCH <span class="badge-admin">Admin</span></a>
+        </div>
+        <nav class="nav-links">
+            <a href="/shop"><i class="ri-store-2-line"></i> View Shop</a>
+            <a href="/owners/admin" class="active"><i class="ri-dashboard-line"></i> Admin Panel</a>
+        </nav>
+    </header>
+
+    <!-- Flash Alerts -->
+    <div class="alert-container">
+        <% if (success && success.length > 0) { %>
+            <div class="alert alert-success">
+                <i class="ri-checkbox-circle-fill"></i> <%= success %>
+            </div>
+        <% } %>
+        <% if (error && error.length > 0) { %>
+            <div class="alert alert-danger">
+                <i class="ri-error-warning-fill"></i> <%= error %>
+            </div>
+        <% } %>
+    </div>
+
+    <!-- Admin Content Container -->
+    <main class="container admin-container">
+        
+        <div class="admin-grid">
+            <!-- Left Side: Product Upload Form -->
+            <section class="card admin-form-card">
+                <h2 class="card-title"><i class="ri-add-circle-line"></i> Create New Product</h2>
+                <p class="card-subtitle">Fill in the details below to add a luxury bag to the store.</p>
+
+                <form action="/products/create" method="POST" enctype="multipart/form-data" class="admin-form">
+                    
+                    <div class="form-group">
+                        <label for="image"><i class="ri-image-add-line"></i> Product Image</label>
+                        <input type="file" id="image" name="image" accept="image/*" class="form-input-file" required>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="name">Product Name</label>
+                            <input type="text" id="name" name="name" placeholder="e.g. Leather Executive Tote" class="form-input" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="price">Price (₹)</label>
+                            <input type="number" id="price" name="price" placeholder="e.g. 2499" min="0" class="form-input" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="discount">Discount Amount (₹)</label>
+                            <input type="number" id="discount" name="discount" placeholder="e.g. 300" min="0" value="0" class="form-input">
+                        </div>
+                    </div>
+
+                    <h3 class="section-subtitle"><i class="ri-palette-line"></i> Product Card Styling</h3>
+                    <div class="form-row color-pickers">
+                        <div class="form-group">
+                            <label for="bgcolor">Card Background</label>
+                            <input type="color" id="bgcolor" name="bgcolor" value="#1e1e24" class="form-input-color">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="panelcolor">Panel Color</label>
+                            <input type="color" id="panelcolor" name="panelcolor" value="#2b2b36" class="form-input-color">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="textcolor">Text Color</label>
+                            <input type="color" id="textcolor" name="textcolor" value="#ffffff" class="form-input-color">
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary btn-block">
+                        <i class="ri-upload-2-line"></i> Publish Product
+                    </button>
+
+                </form>
+            </section>
+
+            <!-- Right Side: Store Overview & Products List -->
+            <section class="card admin-overview-card">
+                <h2 class="card-title"><i class="ri-shopping-bag-3-line"></i> Existing Products (<%= products.length %>)</h2>
+                
+                <% if (products.length === 0) { %>
+                    <div class="empty-state">
+                        <i class="ri-inbox-line empty-icon"></i>
+                        <p>No products uploaded yet. Use the form to add your first bag!</p>
+                    </div>
+                <% } else { %>
+                    <div class="admin-products-list">
+                        <% products.forEach(function(product) { %>
+                            <div class="admin-product-item" style="background-color: <%= product.bgcolor %>; color: <%= product.textcolor %>;">
+                                <div class="admin-product-thumb">
+                                    <% if (product.image) { %>
+                                        <img src="data:image/jpeg;base64,<%= product.image.toString('base64') %>" alt="<%= product.name %>">
+                                    <% } else { %>
+                                        <div class="no-img"><i class="ri-image-line"></i></div>
+                                    <% } %>
+                                </div>
+                                <div class="admin-product-info">
+                                    <h4><%= product.name %></h4>
+                                    <p class="price-tag">₹ <%= product.price %> <% if (product.discount > 0) { %><span class="discount-badge">-₹<%= product.discount %></span><% } %></p>
+                                </div>
+                            </div>
+                        <% }) %>
+                    </div>
+                <% } %>
+            </section>
+        </div>
+
+    </main>
+
+</body>
+</html>

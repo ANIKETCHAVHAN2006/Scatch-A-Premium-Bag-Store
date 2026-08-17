@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scatch - Shop Premium Bags</title>
+    <link rel="stylesheet" href="/stylesheets/style.css">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet" />
+</head>
+<body class="bg-dark font-sans text-light">
+
+    <!-- Header Navigation -->
+    <header class="navbar">
+        <div class="logo">
+            <a href="/">SCATCH</a>
+        </div>
+        <nav class="nav-links">
+            <a href="/"><i class="ri-home-4-line"></i> Home</a>
+            <a href="/shop" class="active"><i class="ri-store-2-line"></i> Shop</a>
+            <% if (user) { %>
+                <a href="/cart"><i class="ri-shopping-cart-2-line"></i> Cart (<%= user.cart ? user.cart.length : 0 %>)</a>
+                <a href="/users/logout" class="btn-sm btn-outline"><i class="ri-logout-box-r-line"></i> Logout</a>
+            <% } else { %>
+                <a href="/login"><i class="ri-user-line"></i> Login</a>
+                <a href="/register" class="btn-sm btn-primary"><i class="ri-user-add-line"></i> Register</a>
+            <% } %>
+        </nav>
+    </header>
+
+    <!-- Flash Alerts -->
+    <div class="alert-container">
+        <% if (success && success.length > 0) { %>
+            <div class="alert alert-success">
+                <i class="ri-checkbox-circle-fill"></i> <%= success %>
+            </div>
+        <% } %>
+        <% if (error && error.length > 0) { %>
+            <div class="alert alert-danger">
+                <i class="ri-error-warning-fill"></i> <%= error %>
+            </div>
+        <% } %>
+    </div>
+
+    <!-- Main Shop Section -->
+    <main class="container shop-container">
+        
+        <div class="shop-header">
+            <div>
+                <h1 class="page-title"><i class="ri-store-3-line"></i> Our Bag Collection</h1>
+                <p class="page-subtitle">Handcrafted bags for every occasion</p>
+            </div>
+            <a href="/owners/admin" class="btn btn-outline"><i class="ri-add-line"></i> Add Product (Admin)</a>
+        </div>
+
+        <% if (products.length === 0) { %>
+            <div class="empty-state card">
+                <i class="ri-shopping-bag-3-line empty-icon"></i>
+                <h2>No Products Available</h2>
+                <p>There are currently no bags in the store. Admins can add new products via the dashboard.</p>
+                <a href="/owners/admin" class="btn btn-primary mt-4"><i class="ri-dashboard-line"></i> Go to Admin Dashboard</a>
+            </div>
+        <% } else { %>
+            <div class="products-grid">
+                <% products.forEach(function(product) { %>
+                    <div 
+                        class="product-card" 
+                        style="background-color: <%= product.bgcolor %>; color: <%= product.textcolor %>;"
+                    >
+                        <div class="product-image-container" style="background-color: <%= product.panelcolor %>;">
+                            <% if (product.image) { %>
+                                <img 
+                                    src="data:image/jpeg;base64,<%= product.image.toString('base64') %>" 
+                                    alt="<%= product.name %>"
+                                    class="product-image"
+                                >
+                            <% } else { %>
+                                <div class="no-image-placeholder">
+                                    <i class="ri-image-line"></i>
+                                </div>
+                            <% } %>
+
+                            <% if (product.discount > 0) { %>
+                                <span class="badge-discount">SAVE ₹<%= product.discount %></span>
+                            <% } %>
+                        </div>
+
+                        <div class="product-details">
+                            <h3 class="product-title"><%= product.name %></h3>
+                            
+                            <div class="product-price-row">
+                                <span class="current-price">₹ <%= product.price - product.discount %></span>
+                                <% if (product.discount > 0) { %>
+                                    <span class="mrp-price">₹ <%= product.price %></span>
+                                <% } %>
+                            </div>
+
+                            <a 
+                                href="/addtocart/<%= product._id %>" 
+                                class="btn btn-add-cart btn-block"
+                            >
+                                <i class="ri-shopping-cart-add-line"></i> Add to Cart
+                            </a>
+                        </div>
+                    </div>
+                <% }) %>
+            </div>
+        <% } %>
+
+    </main>
+
+</body>
+</html>

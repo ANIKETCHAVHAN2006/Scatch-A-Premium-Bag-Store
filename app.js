@@ -1,23 +1,57 @@
-const express = require('express');
+const express = require("express");
+const cookieParser = require("cookie-parser");
+const session = require("express-session");
+const flash = require("connect-flash");
+const path = require("path");
+require("dotenv").config();
+
+// MongoDB Connection
+const db = require("./config/mongoose-connection");
+
 const app = express();
-const cookieParser = require('cookie-parser');
-const path = require('path');
-const ownerRouter = require('./routes/ownersRouter');
-const usersRouter = require('./routes/usersRouter');
-const productsRouter = require('./routes/productsRouter');
 
-const db = require('./config/mongoose-connection');
-
-// Middleware
+// Middlewares
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+
+app.use(
+    session({
+        resave: false,
+        saveUninitialized: false,
+        secret: process.env.EXPRESS_SESSION_SECRET || "scatch_secret_key_2026"
+    })
+);
+
+app.use(flash());
+
+// Pass flash messages to all views
+app.use((req, res, next) => {
+    res.locals.error = req.flash("error");
+    res.locals.success = req.flash("success");
+    next();
+});
+
+// Static files
+app.use(express.static(path.join(__dirname, "public")));
+
+// EJS View Engine
 app.set("view engine", "ejs");
+app.set("views", path.join(__dirname, "views"));
 
-app.use("/owners",ownerRouter);
-app.use("/users",usersRouter);
-app.use("/products",productsRouter);
+// Routes
+const ownersRouter = require("./routes/ownersRouter");
+const usersRouter = require("./routes/userRouter");
+const productsRouter = require("./routes/productsRouter");
+const indexRouter = require("./routes/indexRouter");
 
+app.use("/owners", ownersRouter);
+app.use("/users", usersRouter);
+app.use("/products", productsRouter);
+app.use("/", indexRouter);
 
-app.listen(3000);
+// Server
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+    console.log(`Server running on http://localhost:${PORT}`);
+});

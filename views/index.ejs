@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scatch - Premium Bag Store</title>
+    <link rel="stylesheet" href="/stylesheets/style.css">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet" />
+</head>
+<body class="bg-dark font-sans text-light">
+
+    <!-- Header Navigation -->
+    <header class="navbar">
+        <div class="logo">
+            <a href="/">SCATCH</a>
+        </div>
+        <nav class="nav-links">
+            <a href="/" class="active"><i class="ri-home-4-line"></i> Home</a>
+            <a href="/shop"><i class="ri-store-2-line"></i> Shop</a>
+            <% if (user) { %>
+                <a href="/cart"><i class="ri-shopping-cart-2-line"></i> Cart (<%= user.cart.length %>)</a>
+                <a href="/users/logout" class="btn-sm btn-outline"><i class="ri-logout-box-r-line"></i> Logout</a>
+            <% } else { %>
+                <a href="/login"><i class="ri-user-line"></i> Login</a>
+                <a href="/register" class="btn-sm btn-primary"><i class="ri-user-add-line"></i> Register</a>
+            <% } %>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="hero-content">
+            <span class="hero-tagline"><i class="ri-sparkling-fill"></i> Luxury Leathercraft & Accessories</span>
+            <h1 class="hero-title">Elevate Your Everyday Carry with <span class="gradient-text">Scatch</span></h1>
+            <p class="hero-description">
+                Discover bespoke bags engineered with timeless design, premium Italian leather, and uncompromising precision.
+            </p>
+            <div class="hero-actions">
+                <a href="/shop" class="btn btn-primary btn-lg"><i class="ri-shopping-bag-line"></i> Explore Collection</a>
+                <a href="/owners/admin" class="btn btn-outline btn-lg"><i class="ri-admin-line"></i> Admin Dashboard</a>
+            </div>
+        </div>
+        <div class="hero-visual">
+            <div class="glow-backdrop"></div>
+            <div class="bag-showcase-card">
+                <div class="bag-badge">New Arrival</div>
+                <div class="bag-icon-wrapper">
+                    <i class="ri-handbag-line hero-bag-icon"></i>
+                </div>
+                <h3>Apex Executive Briefcase</h3>
+                <p>Full-Grain Italian Calfskin Leather</p>
+                <div class="bag-price">₹ 4,999</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features-section container">
+        <div class="feature-card">
+            <i class="ri-shield-check-line feature-icon"></i>
+            <h3>Premium Leather</h3>
+            <p>Sourced from sustainable tanneries with rich patina durability.</p>
+        </div>
+        <div class="feature-card">
+            <i class="ri-truck-line feature-icon"></i>
+            <h3>Express Delivery</h3>
+            <p>Fast, insured shipping directly to your doorstep nationwide.</p>
+        </div>
+        <div class="feature-card">
+            <i class="ri-award-line feature-icon"></i>
+            <h3>Master Craftsmanship</h3>
+            <p>Stitched to perfection with reinforced stress points.</p>
+        </div>
+        <div class="feature-card">
+            <i class="ri-refresh-line feature-icon"></i>
+            <h3>Easy Returns</h3>
+            <p>30-day hassle-free exchange and satisfaction guarantee.</p>
+        </div>
+    </section>
+
+    <!-- Call to Action Banner -->
+    <section class="cta-section container">
+        <div class="cta-card">
+            <h2>Ready to Upgrade Your Style?</h2>
+            <p>Join thousands of satisfied professionals carrying Scatch bags every day.</p>
+            <a href="/shop" class="btn btn-primary btn-lg">Browse Store Now</a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container footer-content">
+            <p>&copy; 2026 Scatch Premium Bag Store. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+</body>
+</html>

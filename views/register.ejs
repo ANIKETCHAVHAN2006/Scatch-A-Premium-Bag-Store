@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scatch - Create Account</title>
+    <link rel="stylesheet" href="/stylesheets/style.css">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet" />
+</head>
+<body class="bg-dark font-sans text-light">
+
+    <!-- Header Navigation -->
+    <header class="navbar">
+        <div class="logo">
+            <a href="/">SCATCH</a>
+        </div>
+        <nav class="nav-links">
+            <a href="/"><i class="ri-home-4-line"></i> Home</a>
+            <a href="/shop"><i class="ri-store-2-line"></i> Shop</a>
+            <a href="/login"><i class="ri-user-line"></i> Login</a>
+            <a href="/register" class="active btn-sm btn-primary"><i class="ri-user-add-line"></i> Register</a>
+        </nav>
+    </header>
+
+    <!-- Flash Alerts -->
+    <div class="alert-container">
+        <% if (error && error.length > 0) { %>
+            <div class="alert alert-danger">
+                <i class="ri-error-warning-fill"></i> <%= error %>
+            </div>
+        <% } %>
+        <% if (success && success.length > 0) { %>
+            <div class="alert alert-success">
+                <i class="ri-checkbox-circle-fill"></i> <%= success %>
+            </div>
+        <% } %>
+    </div>
+
+    <!-- Auth Card Container -->
+    <main class="auth-wrapper">
+        <div class="card auth-card">
+            <div class="auth-header">
+                <i class="ri-user-add-line auth-icon"></i>
+                <h2>Create Your Account</h2>
+                <p>Join Scatch to experience premium bag shopping.</p>
+            </div>
+
+            <form action="/users/register" method="POST" class="auth-form">
+                <div class="form-group">
+                    <label for="fullname"><i class="ri-user-3-line"></i> Full Name</label>
+                    <input 
+                        type="text" 
+                        id="fullname" 
+                        name="fullname" 
+                        placeholder="John Doe" 
+                        class="form-input" 
+                        required
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="email"><i class="ri-mail-line"></i> Email Address</label>
+                    <input 
+                        type="email" 
+                        id="email" 
+                        name="email" 
+                        placeholder="john@example.com" 
+                        class="form-input" 
+                        required
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="password"><i class="ri-key-2-line"></i> Password</label>
+                    <input 
+                        type="password" 
+                        id="password" 
+                        name="password" 
+                        placeholder="••••••••" 
+                        class="form-input" 
+                        required
+                    >
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-block btn-lg">
+                    <i class="ri-user-check-line"></i> Register Account
+                </button>
+            </form>
+
+            <div class="auth-footer">
+                <p>Already have an account? <a href="/login" class="auth-link">Log In</a></p>
+            </div>
+        </div>
+    </main>
+
+</body>
+</html>

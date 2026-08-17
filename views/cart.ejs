@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scatch - Shopping Cart</title>
+    <link rel="stylesheet" href="/stylesheets/style.css">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet" />
+</head>
+<body class="bg-dark font-sans text-light">
+
+    <!-- Header Navigation -->
+    <header class="navbar">
+        <div class="logo">
+            <a href="/">SCATCH</a>
+        </div>
+        <nav class="nav-links">
+            <a href="/"><i class="ri-home-4-line"></i> Home</a>
+            <a href="/shop"><i class="ri-store-2-line"></i> Shop</a>
+            <a href="/cart" class="active"><i class="ri-shopping-cart-2-line"></i> Cart (<%= user.cart ? user.cart.length : 0 %>)</a>
+            <a href="/users/logout" class="btn-sm btn-outline"><i class="ri-logout-box-r-line"></i> Logout</a>
+        </nav>
+    </header>
+
+    <!-- Flash Alerts -->
+    <div class="alert-container">
+        <% if (success && success.length > 0) { %>
+            <div class="alert alert-success">
+                <i class="ri-checkbox-circle-fill"></i> <%= success %>
+            </div>
+        <% } %>
+        <% if (error && error.length > 0) { %>
+            <div class="alert alert-danger">
+                <i class="ri-error-warning-fill"></i> <%= error %>
+            </div>
+        <% } %>
+    </div>
+
+    <!-- Cart Main Content -->
+    <main class="container cart-layout">
+        
+        <h1 class="page-title"><i class="ri-shopping-cart-line"></i> Shopping Cart</h1>
+
+        <% if (!user.cart || user.cart.length === 0) { %>
+            
+            <div class="empty-state card">
+                <i class="ri-shopping-cart-2-line empty-icon"></i>
+                <h2>Your Cart is Empty</h2>
+                <p>Looks like you haven't added any luxury bags to your cart yet.</p>
+                <a href="/shop" class="btn btn-primary mt-4"><i class="ri-store-2-line"></i> Browse Bag Collection</a>
+            </div>
+
+        <% } else { %>
+
+            <div class="cart-grid">
+
+                <!-- Left Column: Cart Items List -->
+                <div class="cart-items-list">
+                    <% user.cart.forEach(function(product) { %>
+                        <% if (product) { %>
+                            <div class="cart-item-card" style="background-color: <%= product.bgcolor %>; color: <%= product.textcolor %>;">
+                                
+                                <div class="cart-item-image" style="background-color: <%= product.panelcolor %>;">
+                                    <% if (product.image) { %>
+                                        <img src="data:image/jpeg;base64,<%= product.image.toString('base64') %>" alt="<%= product.name %>">
+                                    <% } else { %>
+                                        <div class="no-img"><i class="ri-image-line"></i></div>
+                                    <% } %>
+                                </div>
+
+                                <div class="cart-item-details">
+                                    <h3><%= product.name %></h3>
+                                    <div class="cart-item-pricing">
+                                        <span class="price">₹ <%= product.price - product.discount %></span>
+                                        <% if (product.discount > 0) { %>
+                                            <span class="mrp">₹ <%= product.price %></span>
+                                            <span class="discount-tag">Save ₹<%= product.discount %></span>
+                                        <% } %>
+                                    </div>
+                                </div>
+
+                                <div class="cart-item-actions">
+                                    <a href="/removefromcart/<%= product._id %>" class="btn-icon btn-danger" title="Remove item">
+                                        <i class="ri-delete-bin-line"></i>
+                                    </a>
+                                </div>
+
+                            </div>
+                        <% } %>
+                    <% }) %>
+                </div>
+
+                <!-- Right Column: Order Summary / Bill Details -->
+                <div class="cart-summary-card card">
+                    <h2 class="summary-title"><i class="ri-file-text-line"></i> Price Breakdown</h2>
+                    
+                    <div class="summary-rows">
+                        <div class="summary-row">
+                            <span>Total MRP (<%= user.cart.length %> items)</span>
+                            <span>₹ <%= billDetails.totalMRP %></span>
+                        </div>
+                        <div class="summary-row text-success">
+                            <span>Discount on MRP</span>
+                            <span>- ₹ <%= billDetails.totalDiscount %></span>
+                        </div>
+                        <div class="summary-row">
+                            <span>Platform Fee</span>
+                            <span>₹ <%= billDetails.platformFee %></span>
+                        </div>
+                        <div class="summary-row">
+                            <span>Shipping Fee</span>
+                            <% if (billDetails.shippingFee === 0) { %>
+                                <span class="text-success">FREE</span>
+                            <% } else { %>
+                                <span>₹ <%= billDetails.shippingFee %></span>
+                            <% } %>
+                        </div>
+
+                        <hr class="summary-divider">
+
+                        <div class="summary-row total-row">
+                            <span>Total Payable Amount</span>
+                            <span class="total-amount">₹ <%= billDetails.finalAmount %></span>
+                        </div>
+                    </div>
+
+                    <button class="btn btn-primary btn-block btn-lg mt-4" onclick="alert('Thank you for ordering with Scatch! Checkout complete.')">
+                        <i class="ri-secure-payment-line"></i> Proceed to Checkout
+                    </button>
+                </div>
+
+            </div>
+
+        <% } %>
+
+    </main>
+
+</body>
+</html>
